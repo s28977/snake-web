@@ -38,14 +38,15 @@ class Snake:
     def make_move(self, direction):
         if self.check_wall_collision(direction) is True:
             return 'Wall collision', self.score
+        if self.check_self_collision(direction) is True:
+            return 'Self collision', self.score
         self.snake_deque.append((self.snake_deque[0][0] + direction[0], self.snake_deque[0][1] + direction[1]))
         if self.check_food() is True:
             self.score += 1
         else:
             self.board[self.snake_deque[0][0]][self.snake_deque[0][1]] = ''
             self.snake_deque.popleft()
-        if self.check_self_collision() is True:
-            return 'Self collision', self.score
+        self.board[self.snake_deque[-1][0] + direction[0]][self.snake_deque[-1][1] + direction[1]] = self.snake_symbol
         return 'Success', self.score
 
     def check_wall_collision(self, direction):
@@ -55,7 +56,8 @@ class Snake:
                 or self.snake_deque[-1][1] + direction[1] < 0)
 
     def check_self_collision(self, direction):
-        return self.board[self.snake_deque[-1][0] + direction[0]][self.snake_deque[-1][1] + direction[1]] == self.snake_symbol
+        return self.board[self.snake_deque[-1][0] + direction[0]][
+            self.snake_deque[-1][1] + direction[1]] == self.snake_symbol
 
     def check_food(self):
         return self.board[self.snake_deque[-1][0]][self.snake_deque[-1][1]] == self.food_symbol
