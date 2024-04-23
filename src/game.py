@@ -50,7 +50,10 @@ class Snake:
         return 'Success', self.score
 
     def check_wall_collision(self, direction):
-        pass
+        return (self.snake_deque[-1][0] + direction[0] >= len(self.board)
+                or self.snake_deque[-1][1] + direction[1] >= len(self.board)
+                or self.snake_deque[-1][0] + direction[0] < 0
+                or self.snake_deque[-1][1] + direction[1] < 0)
 
     def check_self_collision(self):
         pass
