@@ -38,8 +38,9 @@ def print_game(game):
     print(2 * len(game.board) * '-', end='')
     print('|')
 
-
 while True:
+    print('Use wsad to move')
+    time.sleep(2)
     game = Snake(10)
     print_game(game)
     while True:
