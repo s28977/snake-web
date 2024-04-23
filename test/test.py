@@ -21,13 +21,13 @@ def test_incorrect_grid_size():
 def test_initial_snake_position():
     grid_size = 10
     game = Snake(grid_size)
+    assert game.board[grid_size // 2][grid_size // 2 - 2] == game.snake_symbol
+    assert game.board[grid_size // 2][grid_size // 2 - 1] == game.snake_symbol
     assert game.board[grid_size // 2][grid_size // 2] == game.snake_symbol
-    assert game.board[grid_size // 2 - 1][grid_size // 2] == game.snake_symbol
-    assert game.board[grid_size // 2 - 2][grid_size // 2] == game.snake_symbol
 
 
 # Test for checking head and tail position after move
-def test_head_and_tail_position_after_move():
+def test_snake_position_after_move():
     grid_size = 10
     game = Snake(grid_size)
     game.make_move(Direction.UP)
@@ -77,8 +77,8 @@ def test_direction_switch_after_move():
 def test_snake_len_after_eating():
     grid_size = 10
     game = Snake(grid_size)
-    game.generate_food(grid_size // 2 + 1, grid_size // 2)
-    game.generate_food(grid_size // 2 + 1, grid_size // 2 - 1)
+    game.set_food(grid_size // 2, grid_size // 2 + 1)
+    game.set_food(grid_size // 2 - 1, grid_size // 2 + 1)
     game.make_move(Direction.RIGHT)
     game.make_move(Direction.UP)
     snake_len = 0
@@ -92,8 +92,8 @@ def test_snake_len_after_eating():
 def test_self_collision():
     grid_size = 10
     game = Snake(grid_size)
-    game.generate_food(grid_size // 2 + 1, grid_size // 2)
-    game.generate_food(grid_size // 2 + 2, grid_size // 2)
+    game.set_food(grid_size // 2, grid_size // 2 + 1)
+    game.set_food(grid_size // 2, grid_size // + 2)
     game.make_move(Direction.RIGHT)
     game.make_move(Direction.RIGHT)
     game.make_move(Direction.UP)
@@ -111,8 +111,8 @@ def test_no_self_collision():
 def test_no_circular_self_collision():
     grid_size = 10
     game = Snake(grid_size)
-    game.generate_food(grid_size // 2 + 1, grid_size // 2)
+    game.set_food(grid_size // 2, grid_size // 2 + 1)
     game.make_move(Direction.RIGHT)
     game.make_move(Direction.UP)
     game.make_move(Direction.LEFT)
-    assert game.check_self_collision(Direction.DOWN) is False
+    assert game.make_move(Direction.DOWN) == 'success'
