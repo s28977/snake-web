@@ -57,7 +57,6 @@ def test_no_wall_collision():
 def test_food_exists_after_generate_random_food():
     grid_size = 10
     game = Snake(grid_size)
-    game.generate_random_food()
     is_food = 0
     for row in game.board:
         for el in row:

@@ -9,6 +9,16 @@ class Direction(Enum):
     LEFT = (0, -1)
     RIGHT = (0, 1)
 
+    def get_opposite(self):
+        if self == Direction.UP:
+            return Direction.DOWN
+        if self == Direction.RIGHT:
+            return Direction.LEFT
+        if self == Direction.DOWN:
+            return Direction.UP
+        if self == Direction.LEFT:
+            return Direction.RIGHT
+
 
 class Snake:
     def __init__(self, grid_size):
@@ -27,6 +37,7 @@ class Snake:
         self.snake_deque.append((grid_size // 2, grid_size // 2))
         for cell in self.snake_deque:
             self.board[cell[0]][cell[1]] = self.snake_symbol
+        self.generate_random_food()
 
     def set_food(self, i, j):
         self.board[i][j] = 'f'
@@ -44,14 +55,15 @@ class Snake:
         return False
 
     def make_move(self, direction):
-        if self.check_wall_collision(direction) is True:
+        if self.check_wall_collision(direction):
             return 'wall_collision'
-        if self.check_food(direction) is True:
+        if self.check_food(direction):
             self.score += 1
+            self.generate_random_food()
         else:
             self.board[self.snake_deque[0][0]][self.snake_deque[0][1]] = ''
             self.snake_deque.popleft()
-        if self.check_self_collision(direction) is True:
+        if self.check_self_collision(direction):
             return 'self_collision'
         self.snake_deque.append((self.snake_deque[-1][0] + direction.value[0], self.snake_deque[-1][1] + direction.value[1]))
         self.board[self.snake_deque[-1][0]][self.snake_deque[-1][1]] = self.snake_symbol
