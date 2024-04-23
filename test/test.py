@@ -98,15 +98,13 @@ def test_self_collision():
     game.make_move(Direction.RIGHT)
     game.make_move(Direction.UP)
     game.make_move(Direction.LEFT)
-    game.make_move(Direction.DOWN)
-    assert game.check_self_collision() is True
+    assert game.check_self_collision(Direction.DOWN) is True
 
 
 def test_no_self_collision():
     grid_size = 10
     game = Snake(grid_size)
-    game.make_move(Direction.RIGHT)
-    assert game.check_self_collision() is False
+    assert game.check_self_collision(Direction.RIGHT) is False
 
 
 # Test for checking if snake has len=4 and spins in circle, collision won't be detected because
@@ -117,5 +115,4 @@ def test_no_circular_self_collision():
     game.make_move(Direction.RIGHT)
     game.make_move(Direction.UP)
     game.make_move(Direction.LEFT)
-    game.make_move(Direction.DOWN)
-    assert game.check_self_collision() is False
+    assert game.check_self_collision(Direction.DOWN) is False
