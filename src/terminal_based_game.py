@@ -39,9 +39,11 @@ def print_game(game):
     print('|')
 
 while True:
+    name = input('Username: ')
+    size = int(input('Map size: '))
     print('Use wsad to move')
     time.sleep(2)
-    game = Snake(10)
+    game = Snake(size)
     print_game(game)
     while True:
         time.sleep(1)
