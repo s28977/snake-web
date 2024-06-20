@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake</title>
+    <style>
+        .board {
+            display: grid;
+            /* Dynamically generate grid template columns based on grid size */
+            grid-template-columns: repeat({{ grid_size }}, 25px);
+            /* Dynamically generate grid template rows based on grid size */
+            grid-template-rows: repeat({{ grid_size }}, 25px);
+            gap: 2px; /* Adjust gap between cells as needed */
+        }
+
+        .cell {
+            background-color: #ddd;
+            height: 25px; /* Adjust cell height as needed */
+            width: 25px; /* Adjust cell width as needed */
+        }
+        .flex-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-flow: column;
+        }
+    </style>
+</head>
+<body onkeydown="">
+<div class="flex-container">
+<h1>Current score: <span id="score"></span></h1>
+<div class="board" id="board">
+    {% for row in range(grid_size) %}
+        {% for col in range(grid_size) %}
+            <div class="cell"></div>
+        {% endfor %}
+    {% endfor %}
+</div>
+<div id="messageDiv"></div>
+</div>
+</body>
+</html>
