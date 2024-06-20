@@ -15,7 +15,6 @@
         }
 
         .cell {
-            background-color: #ddd;
             height: 25px; /* Adjust cell height as needed */
             width: 25px; /* Adjust cell width as needed */
         }
@@ -29,15 +28,83 @@
 </head>
 <body onkeydown="">
 <div class="flex-container">
-<h1>Current score: <span id="score"></span></h1>
+<h1>Score: <span id="score">0</span></h1>
 <div class="board" id="board">
     {% for row in range(grid_size) %}
         {% for col in range(grid_size) %}
-            <div class="cell"></div>
+            {% if board[row][col] == ""%}
+            <div class="cell" style="background-color: lightgray"></div>
+            {% elif board[row][col] == "f"%}
+            <div class="cell" style="background-color: red"></div>
+            {% elif board[row][col] == "s"%}
+            <div class="cell" style="background-color: green"></div>
+            {% endif %}
         {% endfor %}
     {% endfor %}
 </div>
 <div id="messageDiv"></div>
 </div>
+{#<script>#}
+{#    // Function to make a move#}
+{#    function makeMove(row, col) {#}
+{#        const cell = cells[row][col];#}
+{#        if (!cell.innerText) {#}
+{#            fetch('/make_move', {#}
+{#                method: 'POST',#}
+{#                headers: {#}
+{#                    'Content-Type': 'application/json',#}
+{#                },#}
+{#                body: JSON.stringify({#}
+{#                    row: row,#}
+{#                    col: col#}
+{#                })#}
+{#            })#}
+{#                .then(response => response.json())#}
+{#                .then(data => {#}
+{#                    const result = data.result;#}
+{#                    const winner = data.winner;#}
+{#                    if (result === 'success') {#}
+{#                        currentPlayer = data.current_player;#}
+{#                        document.getElementById('currentPlayer').innerText = `Current Player: ${currentPlayer}`;#}
+{#                        // Use player symbol for the current player#}
+{#                        cell.innerText = playerSymbols[currentPlayer];#}
+{#                        cell.classList.remove('blink'); // Remove blinking effect after making a move#}
+{#                    } else if (result === 'win') {#}
+{#                        messageDiv.innerText = `Congratulations! ${winner} wins!`;#}
+{#                        // Display winning symbols on the board#}
+{#                        const winningCells = data.winning_cells;#}
+{#                        winningCells.forEach(cellCoords => {#}
+{#                            const [row, col] = cellCoords;#}
+{#                            const winningCell = cells[row][col];#}
+{#                            winningCell.style.backgroundColor = 'green';#}
+{#                            winningCell.innerText = '';#}
+{#                        });#}
+{#                        // Disable further moves#}
+{#                        cells.forEach(row => {#}
+{#                            row.forEach(cell => {#}
+{#                                cell.onclick = null;#}
+{#                            });#}
+{#                        });#}
+{#                    } else if (result === 'draw') {#}
+{#                        messageDiv.innerText = 'It\'s a draw!';#}
+{#                    } else if (result === 'occupied') {#}
+{#                        messageDiv.innerText = 'This cell is already occupied. Please choose another one.';#}
+{#                    }#}
+{#                })#}
+{#                .catch(error => {#}
+{#                    console.error('Error:', error);#}
+{#                });#}
+{#        }#}
+{#    }#}
+{##}
+{#    // Initialize cells array#}
+{#    const cells = [];#}
+{#    document.querySelectorAll('.board .cell').forEach((cell, index) => {#}
+{#        const row = Math.floor(index / {{ grid_size }});#}
+{#        const col = index % {{ grid_size }};#}
+{#        if (!cells[row]) cells[row] = [];#}
+{#        cells[row][col] = cell;#}
+{#    });#}
+{#</script>#}
 </body>
 </html>
