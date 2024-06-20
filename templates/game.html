@@ -18,6 +18,7 @@
             height: 25px; /* Adjust cell height as needed */
             width: 25px; /* Adjust cell width as needed */
         }
+
         .flex-container {
             display: flex;
             justify-content: center;
@@ -26,85 +27,89 @@
         }
     </style>
 </head>
-<body onkeydown="">
+<body>
 <div class="flex-container">
-<h1>Score: <span id="score">0</span></h1>
-<div class="board" id="board">
-    {% for row in range(grid_size) %}
-        {% for col in range(grid_size) %}
-            {% if board[row][col] == ""%}
-            <div class="cell" style="background-color: lightgray"></div>
-            {% elif board[row][col] == "f"%}
-            <div class="cell" style="background-color: red"></div>
-            {% elif board[row][col] == "s"%}
-            <div class="cell" style="background-color: green"></div>
-            {% endif %}
+    <h1>Score: <span id="scoreSpan">0</span></h1>
+    <div class="board" id="boardDiv">
+        {% for row in range(grid_size) %}
+            {% for col in range(grid_size) %}
+                {% if board[row][col] == "" %}
+                    <div class="cell" style="background-color: lightgray"></div>
+                {% elif board[row][col] == "s" %}
+                    <div class="cell" style="background-color: green"></div>
+                {% elif board[row][col] == "f" %}
+                    <div class="cell" style="background-color: red"></div>
+                {% endif %}
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
+    </div>
+    <h1 id="messageDiv"></h1>
 </div>
-<div id="messageDiv"></div>
-</div>
-{#<script>#}
-{#    // Function to make a move#}
-{#    function makeMove(row, col) {#}
-{#        const cell = cells[row][col];#}
-{#        if (!cell.innerText) {#}
-{#            fetch('/make_move', {#}
-{#                method: 'POST',#}
-{#                headers: {#}
-{#                    'Content-Type': 'application/json',#}
-{#                },#}
-{#                body: JSON.stringify({#}
-{#                    row: row,#}
-{#                    col: col#}
-{#                })#}
-{#            })#}
-{#                .then(response => response.json())#}
-{#                .then(data => {#}
-{#                    const result = data.result;#}
-{#                    const winner = data.winner;#}
-{#                    if (result === 'success') {#}
-{#                        currentPlayer = data.current_player;#}
-{#                        document.getElementById('currentPlayer').innerText = `Current Player: ${currentPlayer}`;#}
-{#                        // Use player symbol for the current player#}
-{#                        cell.innerText = playerSymbols[currentPlayer];#}
-{#                        cell.classList.remove('blink'); // Remove blinking effect after making a move#}
-{#                    } else if (result === 'win') {#}
-{#                        messageDiv.innerText = `Congratulations! ${winner} wins!`;#}
-{#                        // Display winning symbols on the board#}
-{#                        const winningCells = data.winning_cells;#}
-{#                        winningCells.forEach(cellCoords => {#}
-{#                            const [row, col] = cellCoords;#}
-{#                            const winningCell = cells[row][col];#}
-{#                            winningCell.style.backgroundColor = 'green';#}
-{#                            winningCell.innerText = '';#}
-{#                        });#}
-{#                        // Disable further moves#}
-{#                        cells.forEach(row => {#}
-{#                            row.forEach(cell => {#}
-{#                                cell.onclick = null;#}
-{#                            });#}
-{#                        });#}
-{#                    } else if (result === 'draw') {#}
-{#                        messageDiv.innerText = 'It\'s a draw!';#}
-{#                    } else if (result === 'occupied') {#}
-{#                        messageDiv.innerText = 'This cell is already occupied. Please choose another one.';#}
-{#                    }#}
-{#                })#}
-{#                .catch(error => {#}
-{#                    console.error('Error:', error);#}
-{#                });#}
-{#        }#}
-{#    }#}
-{##}
-{#    // Initialize cells array#}
-{#    const cells = [];#}
-{#    document.querySelectorAll('.board .cell').forEach((cell, index) => {#}
-{#        const row = Math.floor(index / {{ grid_size }});#}
-{#        const col = index % {{ grid_size }};#}
-{#        if (!cells[row]) cells[row] = [];#}
-{#        cells[row][col] = cell;#}
-{#    });#}
-{#</script>#}
+<script>
+    // Initialize cells array
+    const cells = [];
+    document.querySelectorAll('.board .cell').forEach((cell, index) => {
+        const row = Math.floor(index / {{ grid_size }});
+        const col = index % {{ grid_size }};
+        if (!cells[row]) cells[row] = [];
+        cells[row][col] = cell;
+    });
+
+    let lastKey = '';
+    document.addEventListener('keydown', (event) => {
+        lastKey = event.key;
+        console.log(lastKey)
+    })
+
+    // Function to make a move
+    async function makeMove() {
+        return await fetch('/make_move', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                key: lastKey
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                const status = data.status;
+                const board = data.board;
+                const score = data.score;
+                if (status === 'success') {
+                    for (let row = 0; row < {{ grid_size }}; row++) {
+                        for (let col = 0; col < {{ grid_size }}; col++) {
+                            if (board[row][col] === '') {
+                                cells[row][col].style.backgroundColor = 'lightgray'
+                            } else if (board[row][col] === 's') {
+                                cells[row][col].style.backgroundColor = 'green'
+                            } else if (board[row][col] === 'f') {
+                                cells[row][col].style.backgroundColor = 'red'
+                            }
+                        }
+                    }
+                    scoreSpan.innerText = score
+                } else if (status === 'wall_collision' || status === 'self_collision') {
+                    messageDiv.innerText = 'You lose!';
+                }
+                return status;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function gameLoop() {
+        setTimeout(async () => {
+            let resultStatus = await makeMove();
+            if (resultStatus === 'success') {
+                gameLoop();
+            }
+        }, 1000);
+    }
+
+    gameLoop();
+</script>
 </body>
 </html>

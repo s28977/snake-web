@@ -1,7 +1,7 @@
 import msvcrt
 import sys
 import time
-from game import Snake, Direction
+from logic import Snake, Direction
 
 
 def get_direction(char):
