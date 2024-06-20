@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Snake Menu</title>
+    <style>
+        .flex-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-flow: column;
+        }
+    </style>
+</head>
+<body>
+<div class="flex-container">
+<h1>Main menu</h1>
+<form action="/game" method="post">
+    <label>
+        Username: <input type="text" name="name">
+    </label>
+    <label>
+        Game size: <input type="number" name="size" min="5" max="25" step="1">
+    </label>
+    <button type="submit">Start</button>
+</form>
+</div>
+</body>
+</html>

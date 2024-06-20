@@ -26,6 +26,7 @@ class Snake:
             raise ValueError("Grid size must be at least 5.")
         if grid_size > 25:
             raise ValueError("Grid size cannot exceed 25.")
+        self.grid_size = grid_size
         self.board = [['' for _ in range(grid_size)] for _ in range(grid_size)]
         self.food_symbol = 'f'
         self.snake_symbol = 's'
@@ -43,10 +44,10 @@ class Snake:
         self.board[i][j] = 'f'
 
     def generate_random_food(self):
-        num_free_cells = len(self.board) ** 2 - len(self.snake_deque)
+        num_free_cells = self.grid_size ** 2 - len(self.snake_deque)
         rand = random.randint(0, num_free_cells - 1)
-        for i in range(len(self.board)):
-            for j in range(len(self.board)):
+        for i in range(self.grid_size):
+            for j in range(self.grid_size):
                 if self.board[i][j] == '':
                     if rand == 0:
                         self.board[i][j] = 'f'
@@ -71,8 +72,8 @@ class Snake:
         return 'success'
 
     def check_wall_collision(self, direction):
-        return (self.snake_deque[-1][0] + direction.value[0] >= len(self.board)
-                or self.snake_deque[-1][1] + direction.value[1] >= len(self.board)
+        return (self.snake_deque[-1][0] + direction.value[0] >= self.grid_size
+                or self.snake_deque[-1][1] + direction.value[1] >= self.grid_size
                 or self.snake_deque[-1][0] + direction.value[0] < 0
                 or self.snake_deque[-1][1] + direction.value[1] < 0)
 

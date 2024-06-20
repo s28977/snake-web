@@ -1,22 +1,42 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 
 from packages.key_mapping import map_to_direction
 from packages.logic import Snake
 
 app = Flask(__name__)
 
-game = Snake(10)
+game = None
+name = None
+
+@app.route('/menu')
+def menu():
+    return render_template('menu.html')
 
 
-@app.route('/')
-def start_game():  # put application's code here
-    global game
-    return render_template('game.html', grid_size=10, board=game.board)
+@app.route('/game', methods=['POST'])
+def start_game():
+    global game, name
+    data = request.form
+    name = data['name']
+    size = int(data['size'])
+    game = Snake(size)
+    return render_template('game.html', grid_size=size, board=game.board)
+
+
+@app.route('/game', methods=['GET'])
+def restart_game():
+    global game, name
+    if game is None or name is None:
+        print('here')
+        return redirect(url_for("menu"))
+    else:
+        game = Snake(game.grid_size)
+        return render_template('game.html', grid_size=game.grid_size, board=game.board)
 
 
 @app.route('/make_move', methods=['POST'])
 def make_move():
-    global game
+    global game, name
     data = request.json
     key = data['key']
     previous_direction = game.direction
