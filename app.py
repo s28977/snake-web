@@ -9,10 +9,8 @@ app = Flask(__name__)
 game = None
 name = None
 
-
 @app.route('/')
 def menu():
-    initialize_database()
     return render_template('menu.html')
 
 
@@ -55,4 +53,5 @@ def make_move():
 
 
 if __name__ == '__main__':
+    initialize_database()  # Initialize the database if necessary
     app.run(debug=True, host='0.0.0.0')
