@@ -71,3 +71,10 @@ def initialize_database():
             json.dump([], file)
     else:
         initialize_database_from_file(os.path.join(DB_DIR, DB_FILE))
+
+
+def get_leaderboard_list():
+    data_list = read_data_from_file(os.path.join(DB_DIR, DB_FILE))
+    leaderboard_list = [{'name': data['name'], 'grid_size': data['grid_size'], 'score': data['score']} for data in data_list]
+    leaderboard_list.sort(key=lambda data: data['score'])
+    return leaderboard_list
