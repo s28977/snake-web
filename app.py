@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 
 from packages.key_mapping import map_to_direction
 from packages.logic import Snake
+from packages.mongodb import initialize_database, store_game_result, dump_data_to_file
 
 app = Flask(__name__)
 
@@ -11,6 +12,7 @@ name = None
 
 @app.route('/')
 def menu():
+    initialize_database()
     return render_template('menu.html')
 
 
@@ -46,9 +48,11 @@ def make_move():
     if new_direction is None or new_direction == previous_direction.get_opposite():
         new_direction = previous_direction
     status = game.make_move(new_direction)
+    if status == "self_collision" or status == "wall_collision":
+        store_game_result(name, game.grid_size, game.score)
+        dump_data_to_file('db/data.json')
     return jsonify({'status': status, 'board': game.board, 'score': game.score})
 
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
-
