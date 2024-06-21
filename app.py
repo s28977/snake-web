@@ -15,6 +15,11 @@ def menu():
     return render_template('menu.html')
 
 
+@app.route('/setup')
+def game_setup():
+    return render_template('setup.html')
+
+
 @app.route('/game', methods=['POST'])
 def start_game():
     global game, name
