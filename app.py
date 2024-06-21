@@ -27,7 +27,7 @@ def start_game():
     name = data['name']
     grid_size = int(data['grid_size'])
     game = Snake(grid_size)
-    return render_template('game.html', grid_size=grid_size, board=game.board)
+    return render_template('game.html', grid_size=grid_size, board=game.board, symbols=game.symbols)
 
 
 @app.route('/game', methods=['GET'])
@@ -37,7 +37,7 @@ def restart_game():
         return redirect(url_for("menu"))
     else:
         game = Snake(game.grid_size)
-        return render_template('game.html', grid_size=game.grid_size, board=game.board)
+        return render_template('game.html', grid_size=game.grid_size, board=game.board, symbols=game.symbols)
 
 
 @app.route('/make_move', methods=['POST'])

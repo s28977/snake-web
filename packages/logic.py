@@ -28,9 +28,7 @@ class Snake:
             raise ValueError("Grid size cannot exceed 25.")
         self.grid_size = grid_size
         self.board = [['' for _ in range(grid_size)] for _ in range(grid_size)]
-        self.food_symbol = 'f'
-        self.body_symbol = 'b'
-        self.head_symbol = 'h'
+        self.symbols = {'food_symbol': 'f', 'body_symbol': 'b', 'head_symbol': 'h'}
         self.score = 0
         self.direction = Direction.RIGHT
         self.snake_deque = deque()
@@ -38,13 +36,13 @@ class Snake:
         self.snake_deque.append((grid_size // 2, grid_size // 2 - 1))
         self.snake_deque.append((grid_size // 2, grid_size // 2))
         for cell in self.snake_deque:
-            self.board[cell[0]][cell[1]] = self.body_symbol
-        self.board[self.snake_deque[-1][0]][self.snake_deque[-1][1]] = self.head_symbol
+            self.board[cell[0]][cell[1]] = self.symbols['body_symbol']
+        self.board[self.snake_deque[-1][0]][self.snake_deque[-1][1]] = self.symbols['head_symbol']
         if generate_random_food:
             self.generate_random_food()
 
     def set_food(self, i, j):
-        self.board[i][j] = self.food_symbol
+        self.board[i][j] = self.symbols['food_symbol']
 
     def generate_random_food(self):
         num_free_cells = self.grid_size ** 2 - len(self.snake_deque)
@@ -53,7 +51,7 @@ class Snake:
             for j in range(self.grid_size):
                 if self.board[i][j] == '':
                     if rand == 0:
-                        self.board[i][j] = self.food_symbol
+                        self.board[i][j] = self.symbols['food_symbol']
                         return True
                     rand -= 1
         return False
@@ -69,9 +67,9 @@ class Snake:
             self.snake_deque.popleft()
         if self.check_self_collision(direction):
             return 'self_collision'
-        self.board[self.snake_deque[-1][0]][self.snake_deque[-1][1]] = self.body_symbol
+        self.board[self.snake_deque[-1][0]][self.snake_deque[-1][1]] = self.symbols['body_symbol']
         self.snake_deque.append((self.snake_deque[-1][0] + direction.value[0], self.snake_deque[-1][1] + direction.value[1]))
-        self.board[self.snake_deque[-1][0]][self.snake_deque[-1][1]] = self.head_symbol
+        self.board[self.snake_deque[-1][0]][self.snake_deque[-1][1]] = self.symbols['head_symbol']
         self.direction = direction
         return 'success'
 
@@ -83,8 +81,8 @@ class Snake:
 
     def check_self_collision(self, direction):
         return self.board[self.snake_deque[-1][0] + direction.value[0]][
-            self.snake_deque[-1][1] + direction.value[1]] == self.body_symbol
+            self.snake_deque[-1][1] + direction.value[1]] == self.symbols['body_symbol']
 
     def check_food(self, direction):
         return self.board[self.snake_deque[-1][0] + direction.value[0]][
-            self.snake_deque[-1][1] + direction.value[1]] == self.food_symbol
+            self.snake_deque[-1][1] + direction.value[1]] == self.symbols['food_symbol']
