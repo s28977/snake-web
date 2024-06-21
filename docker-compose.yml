@@ -1,8 +1,18 @@
 version: '3'
 
 services:
+  mongodb:
+    image: mongo:4.4.6
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+
   snake:
     build: .
     container_name: snake
     ports:
       - "5000:5000"
+    depends_on:
+      - mongodb
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/game_database
