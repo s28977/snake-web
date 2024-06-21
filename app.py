@@ -19,17 +19,16 @@ def start_game():
     global game, name
     data = request.form
     name = data['name']
-    size = int(data['size'])
-    game = Snake(size)
-    return render_template('game.html', grid_size=size, board=game.board)
+    grid_size = int(data['grid_size'])
+    game = Snake(grid_size)
+    return render_template('game.html', grid_size=grid_size, board=game.board)
 
 
 @app.route('/game', methods=['GET'])
 def restart_game():
     global game, name
     if game is None or name is None:
-        print('here')
-        return redirect(url_for(""))
+        return redirect(url_for("menu"))
     else:
         game = Snake(game.grid_size)
         return render_template('game.html', grid_size=game.grid_size, board=game.board)
