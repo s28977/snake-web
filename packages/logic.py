@@ -21,7 +21,7 @@ class Direction(Enum):
 
 
 class Snake:
-    def __init__(self, grid_size):
+    def __init__(self, grid_size, generate_random_food=True):
         if grid_size < 5:
             raise ValueError("Grid size must be at least 5.")
         if grid_size > 25:
@@ -38,7 +38,8 @@ class Snake:
         self.snake_deque.append((grid_size // 2, grid_size // 2))
         for cell in self.snake_deque:
             self.board[cell[0]][cell[1]] = self.snake_symbol
-        self.generate_random_food()
+        if generate_random_food:
+            self.generate_random_food()
 
     def set_food(self, i, j):
         self.board[i][j] = 'f'
