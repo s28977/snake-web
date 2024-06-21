@@ -2,12 +2,13 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 
 from packages.key_mapping import map_to_direction
 from packages.logic import Snake
-from packages.mongodb import initialize_database, store_game_result, dump_data_to_file
+from packages.mongodb import initialize_database, store_game_result, dump_data_to_file, get_leaderboard_list
 
 app = Flask(__name__)
 
 game = None
 name = None
+
 
 @app.route('/')
 def menu():
@@ -50,6 +51,12 @@ def make_move():
         store_game_result(name, game.grid_size, game.score)
         dump_data_to_file('db/data.json')
     return jsonify({'status': status, 'board': game.board, 'score': game.score})
+
+
+@app.route('/leaderboard')
+def leaderboard():
+    leaderboard_list = get_leaderboard_list()
+    return render_template('leaderboard.html', leaderboard_list=leaderboard_list)
 
 
 if __name__ == '__main__':
