@@ -8,6 +8,7 @@ app = Flask(__name__)
 game = None
 name = None
 
+
 @app.route('/menu')
 def menu():
     return render_template('menu.html')
