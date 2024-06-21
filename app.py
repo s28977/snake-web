@@ -9,7 +9,7 @@ game = None
 name = None
 
 
-@app.route('/menu')
+@app.route('/')
 def menu():
     return render_template('menu.html')
 
@@ -29,7 +29,7 @@ def restart_game():
     global game, name
     if game is None or name is None:
         print('here')
-        return redirect(url_for("menu"))
+        return redirect(url_for(""))
     else:
         game = Snake(game.grid_size)
         return render_template('game.html', grid_size=game.grid_size, board=game.board)
@@ -49,4 +49,5 @@ def make_move():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, host='0.0.0.0')
+

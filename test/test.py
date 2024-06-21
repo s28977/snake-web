@@ -1,5 +1,5 @@
 import pytest
-from src.game import Snake, Direction
+from packages.logic import Snake, Direction
 
 
 # Test for checking correct size of the board
