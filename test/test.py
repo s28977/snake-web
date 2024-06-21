@@ -21,9 +21,9 @@ def test_incorrect_grid_size():
 def test_initial_snake_position():
     grid_size = 10
     game = Snake(grid_size, False)
-    assert game.board[grid_size // 2][grid_size // 2 - 2] == game.snake_symbol
-    assert game.board[grid_size // 2][grid_size // 2 - 1] == game.snake_symbol
-    assert game.board[grid_size // 2][grid_size // 2] == game.snake_symbol
+    assert game.board[grid_size // 2][grid_size // 2 - 2] == game.body_symbol
+    assert game.board[grid_size // 2][grid_size // 2 - 1] == game.body_symbol
+    assert game.board[grid_size // 2][grid_size // 2] == game.head_symbol
 
 
 # Test for checking head and tail position after move
@@ -31,9 +31,9 @@ def test_snake_position_after_move():
     grid_size = 10
     game = Snake(grid_size, False)
     game.make_move(Direction.UP)
-    assert game.board[grid_size // 2][grid_size // 2 - 1] == game.snake_symbol
-    assert game.board[grid_size // 2][grid_size // 2] == game.snake_symbol
-    assert game.board[grid_size // 2 - 1][grid_size // 2] == game.snake_symbol
+    assert game.board[grid_size // 2][grid_size // 2 - 1] == game.body_symbol
+    assert game.board[grid_size // 2][grid_size // 2] == game.body_symbol
+    assert game.board[grid_size // 2 - 1][grid_size // 2] == game.head_symbol
 
 
 # Test for checking detection of wall collision when it should happen
@@ -83,7 +83,7 @@ def test_snake_len_after_eating():
     snake_len = 0
     for row in game.board:
         for el in row:
-            if el == game.snake_symbol:
+            if el == game.body_symbol or el == game.head_symbol:
                 snake_len += 1
     assert snake_len == 5
 
