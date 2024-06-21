@@ -37,6 +37,8 @@ def restart_game():
 @app.route('/make_move', methods=['POST'])
 def make_move():
     global game, name
+    if not game:
+        return jsonify({'error': 'Game has not been initialized.'}), 500
     data = request.json
     key = data['key']
     previous_direction = game.direction
