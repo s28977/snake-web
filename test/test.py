@@ -106,7 +106,7 @@ def test_self_collision():
     grid_size = 10
     game = Snake(grid_size, False)
     game.set_food(grid_size // 2, grid_size // 2 + 1)
-    game.set_food(grid_size // 2, grid_size // + 2)
+    game.set_food(grid_size // 2, grid_size // 2 + 2)
     game.make_move(Direction.RIGHT, False)
     game.make_move(Direction.RIGHT, False)
     game.make_move(Direction.UP)

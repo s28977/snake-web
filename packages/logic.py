@@ -1,6 +1,6 @@
 import random
-from enum import Enum
 from collections import deque
+from enum import Enum
 
 
 class Direction(Enum):
@@ -59,18 +59,22 @@ class Snake:
     def make_move(self, direction, generate_random_food=True):
         if self.check_wall_collision(direction):
             return 'wall_collision'
-        if self.check_food(direction):
-            self.score += 1
-            if generate_random_food:
-                self.generate_random_food()
-        else:
-            self.board[self.snake_deque[0][0]][self.snake_deque[0][1]] = ''
-            self.snake_deque.popleft()
         if self.check_self_collision(direction):
             return 'self_collision'
+        self.board[self.snake_deque[0][0]][self.snake_deque[0][1]] = ''
+        previous_tail_pos = self.snake_deque.popleft()
         self.board[self.snake_deque[-1][0]][self.snake_deque[-1][1]] = self.symbols['body_symbol']
-        self.snake_deque.append((self.snake_deque[-1][0] + direction.value[0], self.snake_deque[-1][1] + direction.value[1]))
+        previous_symbol = self.board[self.snake_deque[-1][0] + direction.value[0]][
+            self.snake_deque[-1][1] + direction.value[1]]
+        self.snake_deque.append(
+            (self.snake_deque[-1][0] + direction.value[0], self.snake_deque[-1][1] + direction.value[1]))
         self.board[self.snake_deque[-1][0]][self.snake_deque[-1][1]] = self.symbols['head_symbol']
+        if previous_symbol == self.symbols['food_symbol']:
+            self.snake_deque.appendleft(previous_tail_pos)
+            self.board[self.snake_deque[0][0]][self.snake_deque[0][1]] = self.symbols['body_symbol']
+            if generate_random_food:
+                self.generate_random_food()
+            self.score += 1
         self.direction = direction
         return 'success'
 
@@ -81,9 +85,8 @@ class Snake:
                 or self.snake_deque[-1][1] + direction.value[1] < 0)
 
     def check_self_collision(self, direction):
-        return self.board[self.snake_deque[-1][0] + direction.value[0]][
-            self.snake_deque[-1][1] + direction.value[1]] == self.symbols['body_symbol']
-
-    def check_food(self, direction):
-        return self.board[self.snake_deque[-1][0] + direction.value[0]][
-            self.snake_deque[-1][1] + direction.value[1]] == self.symbols['food_symbol']
+        return (self.board[self.snake_deque[-1][0] + direction.value[0]][
+                    self.snake_deque[-1][1] + direction.value[1]] == self.symbols['body_symbol']
+                and
+                (self.snake_deque[-1][0] + direction.value[0], self.snake_deque[-1][1] + direction.value[1]) !=
+                self.snake_deque[0])
