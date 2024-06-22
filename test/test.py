@@ -1,4 +1,5 @@
 import pytest
+
 from packages.logic import Snake, Direction
 
 
@@ -57,6 +58,19 @@ def test_no_wall_collision():
 def test_food_exists_after_generate_random_food():
     grid_size = 10
     game = Snake(grid_size)
+    is_food = 0
+    for row in game.board:
+        for el in row:
+            if el == game.symbols['food_symbol']:
+                is_food += 1
+    assert is_food == 1
+
+
+def test_food_gets_generated_after_snake_eating():
+    grid_size = 10
+    game = Snake(grid_size, False)
+    game.set_food(grid_size // 2, grid_size // 2 + 1)
+    game.make_move(Direction.RIGHT)
     is_food = 0
     for row in game.board:
         for el in row:
