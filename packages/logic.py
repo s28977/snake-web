@@ -56,12 +56,13 @@ class Snake:
                     rand -= 1
         return False
 
-    def make_move(self, direction):
+    def make_move(self, direction, generate_random_food=True):
         if self.check_wall_collision(direction):
             return 'wall_collision'
         if self.check_food(direction):
             self.score += 1
-            self.generate_random_food()
+            if generate_random_food:
+                self.generate_random_food()
         else:
             self.board[self.snake_deque[0][0]][self.snake_deque[0][1]] = ''
             self.snake_deque.popleft()

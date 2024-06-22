@@ -78,8 +78,8 @@ def test_snake_len_after_eating():
     game = Snake(grid_size, False)
     game.set_food(grid_size // 2, grid_size // 2 + 1)
     game.set_food(grid_size // 2 - 1, grid_size // 2 + 1)
-    game.make_move(Direction.RIGHT)
-    game.make_move(Direction.UP)
+    game.make_move(Direction.RIGHT, False)
+    game.make_move(Direction.UP, False)
     snake_len = 0
     for row in game.board:
         for el in row:
@@ -93,8 +93,8 @@ def test_self_collision():
     game = Snake(grid_size, False)
     game.set_food(grid_size // 2, grid_size // 2 + 1)
     game.set_food(grid_size // 2, grid_size // + 2)
-    game.make_move(Direction.RIGHT)
-    game.make_move(Direction.RIGHT)
+    game.make_move(Direction.RIGHT, False)
+    game.make_move(Direction.RIGHT, False)
     game.make_move(Direction.UP)
     game.make_move(Direction.LEFT)
     assert game.check_self_collision(Direction.DOWN) is True
@@ -111,7 +111,7 @@ def test_no_circular_self_collision():
     grid_size = 10
     game = Snake(grid_size, False)
     game.set_food(grid_size // 2, grid_size // 2 + 1)
-    game.make_move(Direction.RIGHT)
+    game.make_move(Direction.RIGHT, False)
     game.make_move(Direction.UP)
     game.make_move(Direction.LEFT)
     assert game.make_move(Direction.DOWN) == 'success'
