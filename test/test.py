@@ -129,3 +129,39 @@ def test_no_circular_self_collision():
     game.make_move(Direction.UP)
     game.make_move(Direction.LEFT)
     assert game.make_move(Direction.DOWN) == 'success'
+
+
+def test_borderless_mode_after_passing_through_right_border():
+    grid_size = 5
+    game = Snake(grid_size, False, True)
+    game.make_move(Direction.RIGHT)
+    game.make_move(Direction.RIGHT)
+    game.make_move(Direction.RIGHT)
+    assert game.board[2] == [Snake.symbols['head'], '', '', Snake.symbols['body'], Snake.symbols['body']]
+
+
+def test_borderless_mode_after_passing_through_top_border():
+    grid_size = 5
+    game = Snake(grid_size, False, True)
+    game.make_move(Direction.UP)
+    game.make_move(Direction.UP)
+    game.make_move(Direction.UP)
+    assert [row[2] for row in game.board] == [Snake.symbols['body'], Snake.symbols['body'], '', '', Snake.symbols['head']]
+
+def test_borderless_mode_after_passing_through_bottom_border():
+    grid_size = 5
+    game = Snake(grid_size, False, True)
+    game.make_move(Direction.DOWN)
+    game.make_move(Direction.DOWN)
+    game.make_move(Direction.DOWN)
+    assert [row[2] for row in game.board] == [Snake.symbols['head'], '', '', Snake.symbols['body'], Snake.symbols['body']]
+
+
+def test_borderless_mode_after_passing_through_left_border():
+    grid_size = 5
+    game = Snake(grid_size, False, True)
+    game.make_move(Direction.UP)
+    game.make_move(Direction.LEFT)
+    game.make_move(Direction.LEFT)
+    game.make_move(Direction.LEFT)
+    assert game.board[1] == [Snake.symbols['body'], Snake.symbols['body'], '', '', Snake.symbols['head']]

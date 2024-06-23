@@ -9,7 +9,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
+
             flex-flow: column;
+        }
+        .item {
+            padding: 0 10px 10px 0;
         }
     </style>
 </head>
@@ -17,13 +21,24 @@
 <div class="flex-container">
     <h1>Game setup</h1>
     <form action="/game" method="post">
-        <label>
-            Username: <input type="text" name="name" minlength="1" required>
-        </label>
-        <label>
-            Map size: <input type="number" name="grid_size" min="5" max="25" step="1" required>
-        </label>
-        <button type="submit">Start</button>
+        <div class="item">s
+            <label>
+                Username: <input type="text" name="name" minlength="1" required>
+            </label>
+        </div>
+        <div class="item">
+            <label>
+                Map size: <input type="number" name="grid_size" min="5" max="25" step="1" required>
+            </label>
+        </div>
+        <div class="item">
+            <label>
+                Borderless mode: <input type="checkbox" name="borderless">
+            </label>
+        </div>
+        <div class="item">
+            <button type="submit">Start</button>
+        </div>
     </form>
 </div>
 </body>

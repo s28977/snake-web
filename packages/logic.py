@@ -23,7 +23,7 @@ class Direction(Enum):
 class Snake:
     symbols = {'food': 'f', 'body': 'b', 'head': 'h'}
 
-    def __init__(self, grid_size, generate_random_food=True):
+    def __init__(self, grid_size, generate_random_food=True, borderless=False):
         if grid_size < 5:
             raise ValueError("Grid size must be at least 5.")
         if grid_size > 25:
@@ -41,6 +41,7 @@ class Snake:
         self.board[self.snake_deque[-1][0]][self.snake_deque[-1][1]] = Snake.symbols['head']
         if generate_random_food:
             self.generate_random_food()
+        self.borderless = borderless
 
     def set_food(self, i, j):
         self.board[i][j] = Snake.symbols['food']
@@ -58,17 +59,25 @@ class Snake:
         return False
 
     def make_move(self, direction, generate_random_food=True):
-        if self.check_wall_collision(direction):
-            return 'wall_collision'
+        if not self.borderless:
+            if self.check_wall_collision(direction):
+                return 'wall_collision'
         if self.check_self_collision(direction):
             return 'self_collision'
         self.board[self.snake_deque[0][0]][self.snake_deque[0][1]] = ''
         previous_tail_pos = self.snake_deque.popleft()
         self.board[self.snake_deque[-1][0]][self.snake_deque[-1][1]] = Snake.symbols['body']
-        previous_symbol = self.board[self.snake_deque[-1][0] + direction.value[0]][
-            self.snake_deque[-1][1] + direction.value[1]]
-        self.snake_deque.append(
-            (self.snake_deque[-1][0] + direction.value[0], self.snake_deque[-1][1] + direction.value[1]))
+        if not self.borderless:
+            previous_symbol = self.board[self.snake_deque[-1][0] + direction.value[0]][
+                self.snake_deque[-1][1] + direction.value[1]]
+            self.snake_deque.append(
+                (self.snake_deque[-1][0] + direction.value[0], self.snake_deque[-1][1] + direction.value[1]))
+        else:
+            previous_symbol = self.board[(self.snake_deque[-1][0] + direction.value[0]) % self.grid_size][
+                (self.snake_deque[-1][1] + direction.value[1]) % self.grid_size]
+            self.snake_deque.append(
+                ((self.snake_deque[-1][0] + direction.value[0]) % self.grid_size,
+                 (self.snake_deque[-1][1] + direction.value[1]) % self.grid_size))
         self.board[self.snake_deque[-1][0]][self.snake_deque[-1][1]] = Snake.symbols['head']
         if previous_symbol == Snake.symbols['food']:
             self.snake_deque.appendleft(previous_tail_pos)
@@ -86,8 +95,16 @@ class Snake:
                 or self.snake_deque[-1][1] + direction.value[1] < 0)
 
     def check_self_collision(self, direction):
-        return (self.board[self.snake_deque[-1][0] + direction.value[0]][
-                    self.snake_deque[-1][1] + direction.value[1]] == Snake.symbols['body']
+        if not self.borderless:
+            return (self.board[self.snake_deque[-1][0] + direction.value[0]][
+                        self.snake_deque[-1][1] + direction.value[1]] == Snake.symbols['body']
+                    and
+                    (self.snake_deque[-1][0] + direction.value[0], self.snake_deque[-1][1] + direction.value[1]) !=
+                    self.snake_deque[0])
+        else:
+            return (self.board[(self.snake_deque[-1][0] + direction.value[0]) % self.grid_size][
+                (self.snake_deque[-1][1] + direction.value[1]) % self.grid_size] == Snake.symbols['body']
                 and
-                (self.snake_deque[-1][0] + direction.value[0], self.snake_deque[-1][1] + direction.value[1]) !=
-                self.snake_deque[0])
+                ((self.snake_deque[-1][0] + direction.value[0]) % self.grid_size,
+                 (self.snake_deque[-1][1] + direction.value[1]) % self.grid_size)
+                != self.snake_deque[0])

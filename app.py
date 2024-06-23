@@ -26,7 +26,10 @@ def start_game():
     data = request.form
     name = data['name']
     grid_size = int(data['grid_size'])
-    game = Snake(grid_size)
+    if data.get("borderless"):
+        game = Snake(grid_size, borderless=True)
+    else:
+        game = Snake(grid_size)
     return render_template('game.html', grid_size=grid_size, board=game.board, symbols=Snake.symbols)
 
 
@@ -36,7 +39,7 @@ def restart_game():
     if game is None or name is None:
         return redirect(url_for("menu"))
     else:
-        game = Snake(game.grid_size)
+        game = Snake(game.grid_size, borderless=game.borderless)
         return render_template('game.html', grid_size=game.grid_size, board=game.board, symbols=Snake.symbols)
 
 
