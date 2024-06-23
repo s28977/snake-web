@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 
-from packages.key_mapping import map_to_direction
+from packages.direction_dto_mapping import map_to_direction
 from packages.logic import Snake
 from packages.mongodb import initialize_database, store_game_result, dump_data_to_file, get_leaderboard_list
 
