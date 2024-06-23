@@ -40,11 +40,11 @@
             {% for col in range(grid_size) %}
                 {% if board[row][col] == '' %}
                     <div class="cell" style="background-color: lightgray"></div>
-                {% elif board[row][col] == symbols['body_symbol'] %}
+                {% elif board[row][col] == symbols['body'] %}
                     <div class="cell" style="background-color: lightgreen"></div>
-                {% elif board[row][col] == symbols['head_symbol'] %}
+                {% elif board[row][col] == symbols['head'] %}
                     <div class="cell" style="background-color: darkgreen"></div>
-                {% elif board[row][col] == symbols['food_symbol'] %}
+                {% elif board[row][col] == symbols['food'] %}
                     <div class="cell" style="background-color: red"></div>
                 {% endif %}
             {% endfor %}
@@ -96,11 +96,11 @@
                         for (let col = 0; col < {{ grid_size }}; col++) {
                             if (board[row][col] === '') {
                                 cells[row][col].style.backgroundColor = 'lightgray'
-                            } else if (board[row][col] === '{{ symbols['body_symbol'] }}') {
+                            } else if (board[row][col] === '{{ symbols['body'] }}') {
                                 cells[row][col].style.backgroundColor = 'lightgreen'
-                            } else if (board[row][col] === '{{ symbols['head_symbol'] }}') {
+                            } else if (board[row][col] === '{{ symbols['head'] }}') {
                                 cells[row][col].style.backgroundColor = 'darkgreen'
-                            } else if (board[row][col] === '{{ symbols['food_symbol'] }}') {
+                            } else if (board[row][col] === '{{ symbols['food'] }}') {
                                 cells[row][col].style.backgroundColor = 'red'
                             }
                         }
