@@ -75,6 +75,9 @@
         console.log(lastKey)
     })
 
+    let score = 0;
+    let status;
+    let board;
     // Function to make a move
     async function makeMove() {
         return await fetch('/make_move', {
@@ -88,9 +91,9 @@
         })
             .then(response => response.json())
             .then(data => {
-                const status = data.status;
-                const board = data.board;
-                const score = data.score;
+                status = data.status;
+                board = data.board;
+                score = data.score;
                 if (status === 'success') {
                     for (let row = 0; row < {{ grid_size }}; row++) {
                         for (let col = 0; col < {{ grid_size }}; col++) {
@@ -109,7 +112,6 @@
                 } else if (status === 'wall_collision' || status === 'self_collision') {
                     messageDiv.innerText = 'You lost!';
                 }
-                return status;
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -118,11 +120,11 @@
 
     function gameLoop() {
         setTimeout(async () => {
-            let resultStatus = await makeMove();
-            if (resultStatus === 'success') {
+            await makeMove();
+            if (status === 'success') {
                 gameLoop();
             }
-        }, 1000);
+        }, 1000*(1-score/(score+10)));
     }
 
     gameLoop();
