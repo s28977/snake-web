@@ -76,6 +76,7 @@
     })
 
     let score = 0;
+    let timeout = {{ initial_timeout }};
     let status;
     let board;
     // Function to make a move
@@ -94,6 +95,7 @@
                 status = data.status;
                 board = data.board;
                 score = data.score;
+                timeout = data.timeout;
                 if (status === 'success') {
                     for (let row = 0; row < {{ grid_size }}; row++) {
                         for (let col = 0; col < {{ grid_size }}; col++) {
@@ -124,7 +126,7 @@
             if (status === 'success') {
                 gameLoop();
             }
-        }, 1000*(1-score/(score+10)));
+        }, timeout);
     }
 
     gameLoop();

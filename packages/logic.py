@@ -23,7 +23,7 @@ class Direction(Enum):
 class Snake:
     symbols = {'food': 'f', 'body': 'b', 'head': 'h'}
 
-    def __init__(self, grid_size, generate_random_food=True):
+    def __init__(self, grid_size, generate_random_food=True, initial_speed=1):
         if grid_size < 5:
             raise ValueError("Grid size must be at least 5.")
         if grid_size > 25:
@@ -31,6 +31,8 @@ class Snake:
         self.grid_size = grid_size
         self.board = [['' for _ in range(grid_size)] for _ in range(grid_size)]
         self.score = 0
+        self.initial_speed = initial_speed
+        self.speed = initial_speed  # Number of moves per second
         self.direction = Direction.RIGHT
         self.snake_deque = deque()
         self.snake_deque.append((grid_size // 2, grid_size // 2 - 2))
@@ -76,6 +78,7 @@ class Snake:
             if generate_random_food:
                 self.generate_random_food()
             self.score += 1
+            self.increment_speed()
         self.direction = direction
         return 'success'
 
@@ -91,3 +94,6 @@ class Snake:
                 and
                 (self.snake_deque[-1][0] + direction.value[0], self.snake_deque[-1][1] + direction.value[1]) !=
                 self.snake_deque[0])
+
+    def increment_speed(self):
+        self.speed = self.initial_speed + self.score * 0.1

@@ -27,7 +27,9 @@ def start_game():
     name = data['name']
     grid_size = int(data['grid_size'])
     game = Snake(grid_size)
-    return render_template('game.html', grid_size=grid_size, board=game.board, symbols=Snake.symbols)
+    initial_timeout = int(1000 / game.initial_speed)  # timeout between moves in milliseconds
+    return render_template('game.html', grid_size=grid_size, board=game.board, symbols=Snake.symbols,
+                           initial_timeout=initial_timeout)
 
 
 @app.route('/game', methods=['GET'])
@@ -37,7 +39,9 @@ def restart_game():
         return redirect(url_for("menu"))
     else:
         game = Snake(game.grid_size)
-        return render_template('game.html', grid_size=game.grid_size, board=game.board, symbols=Snake.symbols)
+        initial_timeout = int(1000 / game.initial_speed)  # timeout between moves in milliseconds
+        return render_template('game.html', grid_size=game.grid_size, board=game.board, symbols=Snake.symbols,
+                               initial_timeout=initial_timeout)
 
 
 @app.route('/make_move', methods=['POST'])
@@ -55,7 +59,8 @@ def make_move():
     if status == "self_collision" or status == "wall_collision":
         store_game_result(name, game.grid_size, game.score)
         dump_data_to_file('db/data.json')
-    return jsonify({'status': status, 'board': game.board, 'score': game.score})
+    timeout = int(1000 / game.speed)  # timeout between moves in milliseconds
+    return jsonify({'status': status, 'board': game.board, 'score': game.score, 'timeout': timeout})
 
 
 @app.route('/leaderboard')
