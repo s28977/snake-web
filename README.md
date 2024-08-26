@@ -8,7 +8,7 @@ To install and run the game locally on your machine, **you need to have Docker a
 
 1. Clone or download this repository to your local machine.
 
-2. Navigate to the project directory.
+2. Using CLI, navigate to the project directory.
 
 3. Run this command from project directory:
 
