@@ -16,7 +16,7 @@ To install and run the game locally on your machine, **you need to have Docker a
 docker compose create --build 
 ```
 
-## How to locally run the game in the web
+## How to locally run the game on the web
 
 1. Run this command from project directory:
 
@@ -24,7 +24,7 @@ docker compose create --build
 docker compose start 
 ```
 
-2. Open a web browser and navigate to http://localhost:5000 to play the game. I hope you enjoy!
+2. Open any web browser (e.g. Google Chrome) and navigate to http://localhost:5000 to play the game. I hope you enjoy!
 
 ## How to shut down the game
 
