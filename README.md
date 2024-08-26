@@ -1,12 +1,10 @@
 # Snake Web Game
 
-This is a simple browser-based Snake game implemented in Python using Flask and MongoDB.
+This is a simple browser-based Snake game implemented in Python using Flask and MongoDB. Thanks to the magic of Docker, you don't need to install anything else (e.g. Python) other then Docker!
 
 ## How to install the game
  
 To install and run the game locally on your machine, **you need to have Docker application** installed and running locally on your machine.
-
-Thanks to the magic of Docker, you don't need to install anything else (e.g. Python) other then Docker!
 
 1. Clone or download this repository to your local machine.
 
