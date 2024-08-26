@@ -1,36 +1,42 @@
-# Snake Game by Jan Musiał (s28977)
+# Snake Web Game
 
 This is a simple browser-based Snake game implemented in Python using Flask and MongoDB.
 
-## How to install and run
+## How to install the game
 
-To install and run the game locally on your machine, you need to have Docker application installed and running locally on your machine.
+To install and run the game locally on your machine, **you need to have Docker application** installed and running locally on your machine.
 
 1. Clone or download this repository to your local machine.
 
 2. Navigate to the project directory.
 
-3. Run this command in project directory:
+3. Run this command from project directory:
 
 ```
-docker compose up -d 
+docker compose create --build 
 ```
 
-4. Open a web browser and navigate to http://localhost:5000 to play the game.
+## How to locally run the game in the web
 
-5. After closing the game, run this command in project directory to stop the game:
+1. Run this command from project directory:
+
+```
+docker compose start 
+```
+
+2. Open a web browser and navigate to http://localhost:5000 to play the game.
+
+## How to shut down the game
+
+Run this command from project directory:
 
 ```
 docker compose stop
 ```
 
-6. If you want to play again you can run this command, and the game will launch way faster, because it is already installed:
+## How to delete the game
 
-```
-docker compose start
-```
-
-7. If you want to delete the game run this command in project directory:
+Run this command from project directory:
 
 ```
 docker compose down --rmi all
