@@ -24,7 +24,7 @@ docker compose create --build
 docker compose start 
 ```
 
-2. Open any web browser (e.g. Google Chrome) and navigate to http://localhost:5000 to play the game. I hope you enjoy!
+2. Open any web browser and navigate to http://localhost:5000 to play the game. I hope you enjoy!
 
 ## How to shut down the game
 
