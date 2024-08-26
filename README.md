@@ -4,7 +4,7 @@ This is a simple browser-based Snake game implemented in Python using Flask and 
 
 ## How to install and run
 
-To install and run the game locally on your machine, you need to have Docker application installed and running.
+To install and run the game locally on your machine, you need to have Docker application installed and running locally on your computer.
 
 1. Clone or download this repository to your local machine.
 
