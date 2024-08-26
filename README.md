@@ -17,3 +17,21 @@ docker compose up -d
 ```
 
 4. Open a web browser and navigate to http://localhost:5000 to play the game.
+
+5. After closing the game, run this command in project directory to stop the game:
+
+```
+docker compose stop
+```
+
+6. If you want to play again you can run this command, and the game will launch way faster, because it is already installed:
+
+```
+docker compose start
+```
+
+7. If you want to delete the game run this command in project directory:
+
+```
+docker compose down --rmi all
+```
